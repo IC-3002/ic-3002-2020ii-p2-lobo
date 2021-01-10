@@ -1,4 +1,7 @@
 from dominio import Dominio
+import re
+import random
+
 
 
 class DominioTSP(Dominio):
@@ -45,8 +48,14 @@ class DominioTSP(Dominio):
             Una instancia de DominioTSP correctamente inicializada.
         """
 
-        # Pendiente: implementar este constructor
-        pass
+        # # Pendiente: implementar este constructor
+        # pass
+
+        self.ciudades_rutacsv=ciudades_rutacsv
+        self.ciudad_inicio=ciudad_inicio
+
+
+        
 
     def validar(self, sol):
         """Valida que la solución dada cumple con los requisitos del problema.
@@ -66,7 +75,36 @@ class DominioTSP(Dominio):
         """
 
         # Pendiente: implementar este método
-        pass
+        # pass
+        isValid=True
+        matriza=self.matriz()
+        numCiudades=len(matriza)-1
+
+        fila=matriza[0]
+        ciudadSalida=fila.index(self.ciudad_inicio)-1
+
+        a=1
+        for i in sol:
+            # contener numeros menores a n
+            if i >=numCiudades:
+                isValid= False
+            # no tener repetidos
+            if i in sol[a:]:
+                isValid= False
+                print(sol[a:])
+            a=a+1
+
+        
+        # tamaño n-1
+        if (len(sol)-1)>=(numCiudades):
+            isValid= False
+        # contener la cuidad de inicio
+        elif ciudadSalida in sol:
+            isValid= False
+
+        # print(isValid)
+        return isValid
+
 
     def texto(self, sol):
         """Construye una representación en hilera legible por humanos de la solución
@@ -84,7 +122,23 @@ class DominioTSP(Dominio):
         """
 
         # Pendiente: implementar este método
-        pass
+        # pass
+
+
+        matriza=self.matriz()
+        ruta=""
+        ruta=ruta+(self.ciudad_inicio)+" -> "
+        var1=matriza[0].copy()
+
+        for i in sol:
+            ruta=ruta + (var1.pop(i+1))+" -> "
+            var1=matriza[0].copy()
+
+        ruta=ruta+(self.ciudad_inicio)
+
+        print(ruta)
+        return ruta
+
 
     def generar(self):
         """Construye aleatoriamente una lista que representa una posible solución al problema.
@@ -96,8 +150,22 @@ class DominioTSP(Dominio):
         (list) Una lista que representa una solución válida para esta instancia del vendedor viajero
         """
 
-        # Pendiente: implementar este método
-        pass
+        # # Pendiente: implementar este método
+        # pass
+        matriza=self.matriz()
+        fila=matriza[0]
+        noTomar=fila.index(self.ciudad_inicio)-1
+
+        solucion=random.sample(range(len(fila)-1), len(fila)-1)
+        solucion.remove(noTomar)
+
+        # remueve el valor de km/min
+        # print(fila)
+        # print(solucion)
+
+        return solucion
+
+
 
     def fcosto(self, sol):
         """Calcula el costo asociado con una solución dada.
@@ -111,7 +179,24 @@ class DominioTSP(Dominio):
         """
 
         # Pendiente: implementar este método
-        pass
+        # pass
+        matriza=self.matriz()
+        costo=0
+        primeraCiudad=self.ciudad_inicio
+
+        ciudadSalida=matriza[0].index(primeraCiudad)
+
+        primeraCiudad=ciudadSalida
+
+        for i in sol:
+            costo=costo+float(matriza[ciudadSalida][i+1])
+            ciudadSalida=i+1
+
+        costo=costo+float(matriza[ciudadSalida][primeraCiudad])
+        # print(costo)
+        return costo
+
+
 
     def vecino(self, sol):
         """Calcula una solución vecina a partir de una solución dada.
@@ -130,4 +215,69 @@ class DominioTSP(Dominio):
         """
 
         # Pendiente: implementar este método
-        pass
+        # pass
+        arreglo=[1,2,3]
+        matriza=self.matriz()
+        lar=(len(arreglo)//2)+1
+        var1=arreglo[:lar]
+        var2=arreglo[lar:]
+        var3=var2.copy()
+        var4=arreglo.copy()
+        # print(var1)
+
+        if(len(arreglo)>4):
+            while(var3==var2):
+                random.shuffle(var2)
+
+            for i in var2:
+                var1.append(i)
+                
+        elif(len(arreglo)<=4):
+            while(var4==arreglo):
+                random.shuffle(arreglo)
+            var1=arreglo
+
+        # print(var3)
+        # print(var2)
+        
+
+        print(var1)
+        return var1
+
+
+
+    def matriz(self):
+        matriz=[]
+
+        fic=open(self.ciudades_rutacsv, "r")
+        
+        while True:
+            line=fic.readline()
+            # print(line)
+            if not line:
+                break
+            else:
+                data=self.linea(line)
+                matriz.append(data)
+
+        fic.close()
+
+        # for i in range(len(matriz)):#imprime la matriz jiji
+        #     for j in range(len(matriz[0])):
+        #         print(matriz[i][j])
+
+        return matriz
+
+    def linea(self, linea):
+        regex = r"(.*?),|(.*?)\n"
+        lineas=[]
+
+        matches = re.finditer(regex, linea, re.MULTILINE)
+
+        for match in matches:
+            palabra=match.group()
+            palabra=palabra[:-1]
+            lineas.append(palabra)
+            
+        return lineas
+
