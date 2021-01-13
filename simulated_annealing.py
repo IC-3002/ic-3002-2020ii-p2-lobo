@@ -1,4 +1,7 @@
-def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.95):
+from math import e
+import random
+
+def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.999):
     """Algoritmo de optimización estocástica simulated annealing.
 
     Entradas:
@@ -18,4 +21,32 @@ def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.95):
     """
 
     # Pendiente: implementar esta función
-    pass
+    # pass
+    sol=dominio.generar()
+    costo=dominio.fcosto(sol)
+    cont=0
+    while temperatura > 0.01:
+        print("Primera solución: "+' '.join(map(str,sol)))
+        print("Costo Primero: "+str(costo))
+        sol1=dominio.vecino(sol)
+        costo1=dominio.fcosto(sol1)
+        print("Primera solución vecino: "+' '.join(map(str,sol1)))
+        print("Costo Primero vecino: "+str(costo1))
+
+        p=(e**(-(abs(costo1-costo)/temperatura)))
+        pazar=random.uniform(0, 1)
+
+        print("p: "+str(p))
+        print("pazar: "+str(pazar))
+
+        if costo1 < costo or pazar <= p:
+            sol=sol1
+            costo=costo1
+            
+        temperatura = temperatura * tasa_enfriamiento
+        cont=cont+1
+        print(str(temperatura))
+        
+        print("----------------------------------------------------\n")
+    print(cont)
+    return sol

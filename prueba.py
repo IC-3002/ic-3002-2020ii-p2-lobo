@@ -1,5 +1,8 @@
 import re
+from simulated_annealing import optimizar
 from dominio_tsp import DominioTSP
+from math import e
+
 
 def matriz():
 
@@ -20,11 +23,11 @@ def matriz():
         print( matriz)
 
 
-
-# tsp = DominioTSP('datos/ciudades_cr_pruebas.csv', 'Cartago')
-# solucion=tsp.generar()
-# print(solucion)
-# # tsp.validar(solucion)
+# print(e)
+dominio = DominioTSP('datos/ciudades_cr.csv', 'Cartago')
+solucion=optimizar(dominio)
+print(solucion)
+# tsp.validar(solucion)
 # tsp.texto(solucion)
 # # tsp.fcosto(solucion)
 # tsp.vecino(solucion)

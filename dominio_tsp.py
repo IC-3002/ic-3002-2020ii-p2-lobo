@@ -91,12 +91,13 @@ class DominioTSP(Dominio):
             # no tener repetidos
             if i in sol[a:]:
                 isValid= False
-                print(sol[a:])
+                # print(sol[a:])
             a=a+1
 
         
         # tamaño n-1
-        if (len(sol)-1)>=(numCiudades):
+        if (len(sol))!=(numCiudades-1):
+            # print("aqui")
             isValid= False
         # contener la cuidad de inicio
         elif ciudadSalida in sol:
@@ -136,7 +137,7 @@ class DominioTSP(Dominio):
 
         ruta=ruta+(self.ciudad_inicio)
 
-        print(ruta)
+        # print(ruta)
         return ruta
 
 
@@ -216,34 +217,42 @@ class DominioTSP(Dominio):
 
         # Pendiente: implementar este método
         # pass
-        arreglo=[1,2,3]
-        matriza=self.matriz()
-        lar=(len(arreglo)//2)+1
-        var1=arreglo[:lar]
-        var2=arreglo[lar:]
-        var3=var2.copy()
-        var4=arreglo.copy()
-        # print(var1)
+        # matriza=self.matriz()
+        # lar=(len(sol)//2)+1
+        # var1=sol[:lar]
+        # var2=sol[lar:]
+        # var3=var2.copy()
+        # var4=sol.copy()
 
-        if(len(arreglo)>4):
-            while(var3==var2):
-                random.shuffle(var2)
+        # if(len(sol)>4):
+        #     while(var3==var2):
+        #         random.shuffle(var2)
 
-            for i in var2:
-                var1.append(i)
-                
-        elif(len(arreglo)<=4):
-            while(var4==arreglo):
-                random.shuffle(arreglo)
-            var1=arreglo
+        #     for i in var2:
+        #         var1.append(i)
 
-        # print(var3)
-        # print(var2)
+        # elif(len(sol)<=4):
+        #     while(var4==sol):
+        #         random.shuffle(sol)
+        #     var1=sol
+
+        # return var1
+
+        vecino=sol.copy()
+        limiteCambios=(len(vecino)//2)-1
+        while limiteCambios>0:
+            num1=random.randint(0, len(vecino)-1)
+            num2=random.randint(0, len(vecino)-1)
+            numeroSaca=0
+
+            if num1!=num2:
+                numeroSaca=vecino[num1]
+                vecino[num1]=vecino[num2]
+                vecino[num2]=numeroSaca
+
+            limiteCambios=limiteCambios-1
         
-
-        print(var1)
-        return var1
-
+        return vecino
 
 
     def matriz(self):
