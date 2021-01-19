@@ -48,10 +48,14 @@ class DominioAGTSP(DominioAG, DominioTSP):
         self.indice_ciudad_inicio = self.indice_ciudades_dicc[ciudad_inicio]
         self.ciudad_inicio = ciudad_inicio"""
 
-        self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
-        self.n_ciudades = len(self.ciudades)
-        self.nombre_ciudad_inicio = ciudad_inicio
-        self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
+        # self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
+        # self.n_ciudades = len(self.ciudades)
+        # self.nombre_ciudad_inicio = ciudad_inicio
+        # self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
+
+
+        self.ciudades_rutacsv=ciudades_rutacsv
+        self.ciudad_inicio=ciudad_inicio
 
     def generar_n(self, n):
         """Construye aleatoriamente una lista de listas que representa n 
@@ -129,8 +133,8 @@ class DominioAGTSP(DominioAG, DominioTSP):
         """
         return super().vecino(sol)
 
-    def indice_a_texto(self, sol):
-        sol_txt = []
-        for indice in sol:
-            sol_txt.append(self.ciudades[indice]['km/min'])
-        return sol_txt
+    # def indice_a_texto(self, sol):
+    #     sol_txt = []
+    #     for indice in sol:
+    #         sol_txt.append(self.ciudades[indice]['km/min'])
+    #     return sol_txt
