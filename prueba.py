@@ -20,7 +20,7 @@ def matriz():
             palabra=palabra[:-1]
             matriz.append(palabra)
             
-        print( matriz)
+        print(matriz)
 
 
 # print(e)

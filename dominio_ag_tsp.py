@@ -48,8 +48,8 @@ class DominioAGTSP(DominioAG, DominioTSP):
         self.indice_ciudad_inicio = self.indice_ciudades_dicc[ciudad_inicio]
         self.ciudad_inicio = ciudad_inicio"""
 
-        self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
-        self.n_ciudades = len(self.ciudades)
+        self.ciudades_rutacsv, self.i_ciudades = crear_datos(ciudades_rutacsv)
+        self.n_ciudades = len(self.ciudades_rutacsv)
         self.nombre_ciudad_inicio = ciudad_inicio
         self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
 

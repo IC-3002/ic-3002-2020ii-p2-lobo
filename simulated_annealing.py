@@ -1,7 +1,7 @@
 from math import e
 import random
 
-def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.999):
+def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.99):
     """Algoritmo de optimización estocástica simulated annealing.
 
     Entradas:
@@ -48,5 +48,5 @@ def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.999):
         # print(str(temperatura))
         
         # print("----------------------------------------------------\n")
-    print(cont)
+    # print(cont)
     return sol
