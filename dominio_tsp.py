@@ -3,6 +3,9 @@ import re
 import random
 
 
+import random as rd
+import collections
+from datos import crear_datos
 
 class DominioTSP(Dominio):
     """
@@ -11,7 +14,7 @@ class DominioTSP(Dominio):
 
     Las soluciones se modelan como listas de enteros, donde cada número representa
     una ciudad específica. Si el grafo contiene n ciudades, la lista siempre contiene
-    (n-1) elementos. La lista nunca contiene elementos repetidos y nunca contiene la 
+    (n-1) elementos. La lista nunca contiene elementos repetidos y nunca contiene la
     ciudad de inicio y fin del circuito.
 
     Métodos:
@@ -47,6 +50,10 @@ class DominioTSP(Dominio):
         Salidas:
             Una instancia de DominioTSP correctamente inicializada.
         """
+        self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
+        self.n_ciudades = len(self.ciudades)
+        self.nombre_ciudad_inicio = ciudad_inicio
+        self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
 
         # # Pendiente: implementar este constructor
         # pass
@@ -59,7 +66,6 @@ class DominioTSP(Dominio):
 
     def validar(self, sol):
         """Valida que la solución dada cumple con los requisitos del problema.
-
         Si n es el número de ciudades en el grafo, la solución debe:
         - Tener tamaño (n-1)
         - Contener sólo números enteros menores que n (las ciudades se numeran de 0 a (n-1))
@@ -73,6 +79,18 @@ class DominioTSP(Dominio):
         Salidas:
         (bool) True si la solución es válida, False en cualquier otro caso
         """
+        repetidos = [x for x, y in collections.Counter(sol).items() if y > 1]
+
+        if len(sol) != self.n_ciudades-1:
+            return False
+        if repetidos != []:
+            return False
+        for entero in sol:
+            if entero > len(sol):
+                return False
+            if self.i_ciudad_inicio == entero:
+                return False
+        return True
 
         # Pendiente: implementar este método
         # pass
@@ -170,14 +188,23 @@ class DominioTSP(Dominio):
 
     def fcosto(self, sol):
         """Calcula el costo asociado con una solución dada.
-
+    
         Entradas:
         sol (list)
-            Solución cuyo costo se debe calcular
+        Solución cuyo costo se debe calcular
 
         Salidas:
         (float) valor del costo asociado con la solución
         """
+        primera_visitada = self.ciudades[sol[0]]["km/min"]
+        costo_ruta = float(self.ciudades[self.i_ciudad_inicio][primera_visitada])
+
+        for i_ciudad in range(self.n_ciudades-2):
+            ciudad_sig = self.ciudades[sol[i_ciudad+1]]['km/min']
+            costo_ruta += float(self.ciudades[sol[i_ciudad]][ciudad_sig])
+        
+        ultima_ciudad = self.i_ciudades[ciudad_sig]
+        costo_ruta += float(self.ciudades[ultima_ciudad][self.nombre_ciudad_inicio])
 
         # Pendiente: implementar este método
         # pass
@@ -198,12 +225,11 @@ class DominioTSP(Dominio):
         return costo
 
 
-
     def vecino(self, sol):
         """Calcula una solución vecina a partir de una solución dada.
 
-        Una solución vecina comparte la mayor parte de su estructura con 
-        la solución que la origina, aunque no son exactamente iguales. El 
+        Una solución vecina comparte la mayor parte de su estructura con
+        la solución que la origina, aunque no son exactamente iguales. El
         método transforma aleatoriamente algún aspecto de la solución
         original.
 

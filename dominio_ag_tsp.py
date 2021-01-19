@@ -1,5 +1,7 @@
 from dominio_ag import DominioAG
 from dominio_tsp import DominioTSP
+from datos import crear_datos
+import random
 
 class DominioAGTSP(DominioAG, DominioTSP):
     """
@@ -40,9 +42,16 @@ class DominioAGTSP(DominioAG, DominioTSP):
         Salidas:
             Una instancia de DominioAGTSP correctamente inicializada.
         """
-        
-        # Pendiente: implementar este constructor
-        pass
+
+        """self.matriz_ciudades, self.indice_ciudades_dicc = crear_datos(ciudades_rutacsv)
+        self.n_ciudades = len(self.indice_ciudades_dicc)
+        self.indice_ciudad_inicio = self.indice_ciudades_dicc[ciudad_inicio]
+        self.ciudad_inicio = ciudad_inicio"""
+
+        self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
+        self.n_ciudades = len(self.ciudades)
+        self.nombre_ciudad_inicio = ciudad_inicio
+        self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
 
     def generar_n(self, n):
         """Construye aleatoriamente una lista de listas que representa n 
@@ -56,9 +65,15 @@ class DominioAGTSP(DominioAG, DominioTSP):
         (list) Lista que contiene n listas, cada una representando
         una posible solución al problema modelado por el objeto de dominio.
         """
-        
-        # Pendiente: implementar este método
-        pass
+        sols = []
+        for x in range(n):
+            nuevo = self.generar()
+            valido = self.validar(nuevo)
+            while(not valido):
+                nuevo = self.generar()
+                valido = self.validar(nuevo)
+            sols.append(nuevo)
+        return sols
 
     def cruzar(self, sol_a, sol_b):
         """Produce una nueva posible solución cruzando las dos soluciones dadas por parámetro.
@@ -73,9 +88,32 @@ class DominioAGTSP(DominioAG, DominioTSP):
         Salidas:
         (estructura de datos) Una nueva solución producto del cruzamiento entre las soluciones A y B
         """
+        P1 = sol_a
+        P2 = sol_b
+        lenOri = len(sol_a)
+        H1 = [-1] * lenOri
+        geneA = 0
+        geneB = 0
+        while (geneA == geneB):#para que lo rango no sea igual a vacio
+            geneA = int(random.random() * lenOri)
+            geneB = int(random.random() * lenOri)
 
-        # Pendiente: implementar este método
-        pass
+        startGene = min(geneA, geneB)
+        endGene = max(geneA, geneB)
+
+        for i in range(startGene, endGene):
+            H1[i] = P1[i]
+        rec = 0#recorrido del padre
+        recorrido = 0#pos en la que va el nuevo elemento
+        while (rec < lenOri):
+            while (H1[recorrido] != -1 and recorrido + 1 < lenOri):
+                recorrido += 1
+            if (P2[rec] not in H1):
+                H1[recorrido] = P2[rec]
+            rec += 1
+        return H1
+
+
 
     def mutar(self, sol):
         """Produce una nueva solución aplicando un ligero cambio a la solución dada por
@@ -89,6 +127,10 @@ class DominioAGTSP(DominioAG, DominioTSP):
         (estructura de datos) Una nueva solución que refleja un ligero cambio con respecto 
         a la solución dada por parámetro
         """
+        return super().vecino(sol)
 
-        # Pendiente: implementar este método
-        pass
+    def indice_a_texto(self, sol):
+        sol_txt = []
+        for indice in sol:
+            sol_txt.append(self.ciudades[indice]['km/min'])
+        return sol_txt
