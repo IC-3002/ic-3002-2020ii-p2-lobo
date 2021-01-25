@@ -12,7 +12,7 @@ class DominioTSP(Dominio):
 
     Las soluciones se modelan como listas de enteros, donde cada número representa
     una ciudad específica. Si el grafo contiene n ciudades, la lista siempre contiene
-    (n-1) elementos. La lista nunca contiene elementos repetidos y nunca contiene la 
+    (n-1) elementos. La lista nunca contiene elementos repetidos y nunca contiene la
     ciudad de inicio y fin del circuito.
 
     Métodos:
@@ -48,6 +48,10 @@ class DominioTSP(Dominio):
         Salidas:
             Una instancia de DominioTSP correctamente inicializada.
         """
+        self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
+        self.n_ciudades = len(self.ciudades)
+        self.nombre_ciudad_inicio = ciudad_inicio
+        self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
 
         # # Pendiente: implementar este constructor
         # pass
@@ -60,7 +64,6 @@ class DominioTSP(Dominio):
 
     def validar(self, sol):
         """Valida que la solución dada cumple con los requisitos del problema.
-
         Si n es el número de ciudades en el grafo, la solución debe:
         - Tener tamaño (n-1)
         - Contener sólo números enteros menores que n (las ciudades se numeran de 0 a (n-1))
@@ -74,6 +77,7 @@ class DominioTSP(Dominio):
         Salidas:
         (bool) True si la solución es válida, False en cualquier otro caso
         """
+        repetidos = [x for x, y in collections.Counter(sol).items() if y > 1]
 
         # Pendiente: implementar este método
         # pass
@@ -122,6 +126,12 @@ class DominioTSP(Dominio):
         Salidas:
         (str) Hilera en el formato mencionado anteriormente.
         """
+        formato_legible = self.nombre_ciudad_inicio + " -> "
+        for ciudad in sol:
+            nombre_actual = self.ciudades[ciudad]['km/min']
+            formato_legible += nombre_actual + " -> "
+        formato_legible += self.nombre_ciudad_inicio
+        return formato_legible
 
         # Pendiente: implementar este método
         # pass
@@ -151,6 +161,10 @@ class DominioTSP(Dominio):
         Salidas:
         (list) Una lista que representa una solución válida para esta instancia del vendedor viajero
         """
+        sol =  list(range(0,self.n_ciudades))
+        del sol[self.i_ciudad_inicio]
+        rd.shuffle(sol)        
+        return sol
 
         # # Pendiente: implementar este método
         # pass
@@ -171,14 +185,16 @@ class DominioTSP(Dominio):
 
     def fcosto(self, sol):
         """Calcula el costo asociado con una solución dada.
-
+    
         Entradas:
         sol (list)
-            Solución cuyo costo se debe calcular
+        Solución cuyo costo se debe calcular
 
         Salidas:
         (float) valor del costo asociado con la solución
         """
+        primera_visitada = self.ciudades[sol[0]]["km/min"]
+        costo_ruta = float(self.ciudades[self.i_ciudad_inicio][primera_visitada])
 
         # Pendiente: implementar este método
         # pass
@@ -203,8 +219,8 @@ class DominioTSP(Dominio):
     def vecino(self, sol):
         """Calcula una solución vecina a partir de una solución dada.
 
-        Una solución vecina comparte la mayor parte de su estructura con 
-        la solución que la origina, aunque no son exactamente iguales. El 
+        Una solución vecina comparte la mayor parte de su estructura con
+        la solución que la origina, aunque no son exactamente iguales. El
         método transforma aleatoriamente algún aspecto de la solución
         original.
 

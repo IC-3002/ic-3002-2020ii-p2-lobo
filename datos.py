@@ -26,3 +26,4 @@ def crear_datos(nombre_archivo):
 			diccionario.append(fila)
 			indices_ciudades[fila['km/min']] = next(i_ciudad)
 	return diccionario,indices_ciudades
+
