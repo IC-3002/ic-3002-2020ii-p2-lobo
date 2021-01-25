@@ -4,6 +4,7 @@ import collections
 from datos import crear_datos
 import re
 import random
+import csv
 
 class DominioTSP(Dominio):
     """
@@ -48,14 +49,22 @@ class DominioTSP(Dominio):
         Salidas:
             Una instancia de DominioTSP correctamente inicializada.
         """
-        self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
-        self.n_ciudades = len(self.ciudades)
-        self.nombre_ciudad_inicio = ciudad_inicio
-        self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
+        # self.ciudades, self.i_ciudades = crear_datos(ciudades_rutacsv)
+        # self.n_ciudades = len(self.ciudades)
+        # self.nombre_ciudad_inicio = ciudad_inicio
+        # self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
 
         # # Pendiente: implementar este constructor
         # pass
 
+
+        matr=[]
+        with open(ciudades_rutacsv, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                matr.append(row)
+
+        self.matriz=matr
         self.ciudades_rutacsv=ciudades_rutacsv
         self.ciudad_inicio=ciudad_inicio
 
@@ -77,12 +86,12 @@ class DominioTSP(Dominio):
         Salidas:
         (bool) True si la solución es válida, False en cualquier otro caso
         """
-        repetidos = [x for x, y in collections.Counter(sol).items() if y > 1]
+        # repetidos = [x for x, y in collections.Counter(sol).items() if y > 1]
 
         # Pendiente: implementar este método
         # pass
         isValid=True
-        matriza=self.matriz()
+        matriza=self.matriz
         numCiudades=len(matriza)-1
 
         fila=matriza[0]
@@ -126,18 +135,18 @@ class DominioTSP(Dominio):
         Salidas:
         (str) Hilera en el formato mencionado anteriormente.
         """
-        formato_legible = self.nombre_ciudad_inicio + " -> "
-        for ciudad in sol:
-            nombre_actual = self.ciudades[ciudad]['km/min']
-            formato_legible += nombre_actual + " -> "
-        formato_legible += self.nombre_ciudad_inicio
-        return formato_legible
+        # formato_legible = self.nombre_ciudad_inicio + " -> "
+        # for ciudad in sol:
+        #     nombre_actual = self.ciudades[ciudad]['km/min']
+        #     formato_legible += nombre_actual + " -> "
+        # formato_legible += self.nombre_ciudad_inicio
+        # return formato_legible
 
         # Pendiente: implementar este método
         # pass
 
 
-        matriza=self.matriz()
+        matriza=self.matriz
         ruta=""
         ruta=ruta+(self.ciudad_inicio)+" -> "
         var1=matriza[0].copy()
@@ -161,14 +170,14 @@ class DominioTSP(Dominio):
         Salidas:
         (list) Una lista que representa una solución válida para esta instancia del vendedor viajero
         """
-        sol =  list(range(0,self.n_ciudades))
-        del sol[self.i_ciudad_inicio]
-        rd.shuffle(sol)        
-        return sol
+        # sol =  list(range(0,self.n_ciudades))
+        # del sol[self.i_ciudad_inicio]
+        # rd.shuffle(sol)        
+        # return sol
 
         # # Pendiente: implementar este método
         # pass
-        matriza=self.matriz()
+        matriza=self.matriz
         fila=matriza[0]
         noTomar=fila.index(self.ciudad_inicio)-1
 
@@ -193,12 +202,12 @@ class DominioTSP(Dominio):
         Salidas:
         (float) valor del costo asociado con la solución
         """
-        primera_visitada = self.ciudades[sol[0]]["km/min"]
-        costo_ruta = float(self.ciudades[self.i_ciudad_inicio][primera_visitada])
+        # primera_visitada = self.ciudades[sol[0]]["km/min"]
+        # costo_ruta = float(self.ciudades[self.i_ciudad_inicio][primera_visitada])
 
         # Pendiente: implementar este método
         # pass
-        matriza=self.matriz()
+        matriza=self.matriz
         costo=0
         primeraCiudad=self.ciudad_inicio
 
@@ -232,32 +241,11 @@ class DominioTSP(Dominio):
         (list) Solución vecina
         """
 
-        # Pendiente: implementar este método
-        # pass
-        # matriza=self.matriz()
-        # lar=(len(sol)//2)+1
-        # var1=sol[:lar]
-        # var2=sol[lar:]
-        # var3=var2.copy()
-        # var4=sol.copy()
-
-        # if(len(sol)>4):
-        #     while(var3==var2):
-        #         random.shuffle(var2)
-
-        #     for i in var2:
-        #         var1.append(i)
-
-        # elif(len(sol)<=4):
-        #     while(var4==sol):
-        #         random.shuffle(sol)
-        #     var1=sol
-
-        # return var1
 
         vecino=sol.copy()
-        limiteCambios=(len(vecino)//2)-1
-        while limiteCambios>0:
+        # limiteCambios=(len(vecino)//2)-1
+        # while limiteCambios>0:
+        while vecino==sol:
             num1=random.randint(0, len(vecino)-1)
             num2=random.randint(0, len(vecino)-1)
             numeroSaca=0
@@ -267,42 +255,20 @@ class DominioTSP(Dominio):
                 vecino[num1]=vecino[num2]
                 vecino[num2]=numeroSaca
 
-            limiteCambios=limiteCambios-1
-        
         return vecino
 
+        # temp = sol.copy()
+        # cambio_invalido = True
+        # cambios = 3
+        # while cambio_invalido or cambios == 0:
+        #     # i,j = rd.randint(0,self.n_ciudades-2),rd.randint(0,self.n_ciudades-2)
+        #     i,j = rd.randint(0,len(self.matriz)-2),rd.randint(0,len(self.matriz)-2)
+        #     temp[i],temp[j] = temp[j],temp[i]
+        #     cambio_invalido = True
+        #     if temp != sol:
+        #         cambio_invalido = False
+        #     cambios -=1
+        # return temp
 
-    def matriz(self):
-        matriz=[]
 
-        fic=open(self.ciudades_rutacsv, "r")
-        
-        while True:
-            line=fic.readline()
-            # print(line)
-            if not line:
-                break
-            else:
-                data=self.linea(line)
-                matriz.append(data)
-
-        fic.close()
-
-        # for i in range(len(matriz)):#imprime la matriz jiji
-        #     for j in range(len(matriz[0])):
-        #         print(matriz[i][j])
-
-        return matriz
-
-    def linea(self, linea):
-        regex = r"(.*?),|(.*?)\n"
-        lineas=[]
-
-        matches = re.finditer(regex, linea, re.MULTILINE)
-
-        for match in matches:
-            palabra=match.group()
-            palabra=palabra[:-1]
-            lineas.append(palabra)
-            
-        return lineas
+    

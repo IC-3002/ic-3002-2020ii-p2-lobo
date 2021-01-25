@@ -53,6 +53,6 @@ if __name__ == '__main__':
 	tsp(graph, v, 0, n, 1, 0)
 
 	# ans is the minimum weight Hamiltonian Cycle
-	print(min(answer))
+	print("Optimo: "+str(min(answer)))
 
 # This code is contributed by mohit kumar

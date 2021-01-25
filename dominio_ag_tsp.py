@@ -2,6 +2,7 @@ from dominio_ag import DominioAG
 from dominio_tsp import DominioTSP
 from datos import crear_datos
 import random
+import csv
 
 class DominioAGTSP(DominioAG, DominioTSP):
     """
@@ -53,7 +54,13 @@ class DominioAGTSP(DominioAG, DominioTSP):
         # self.nombre_ciudad_inicio = ciudad_inicio
         # self.i_ciudad_inicio = self.i_ciudades[ciudad_inicio]
 
+        mat=[]
+        with open(ciudades_rutacsv, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                mat.append(row)
 
+        self.matriz=mat
         self.ciudades_rutacsv=ciudades_rutacsv
         self.ciudad_inicio=ciudad_inicio
 
