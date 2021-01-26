@@ -61,8 +61,9 @@ def optimizar(dominio, tam_pobl, porc_elite, prob_mut, reps,testeo):
     if testeo:
         return poblacion[0],datos
 
-    ordena_poblacion(dominio,poblacion)                     
-    return costo#poblacion[0]  
+    ordena_poblacion(dominio,poblacion)
+    #costo = dominio.fcosto(poblacion[0])                     
+    return poblacion[0]  
 
 
 def seleccion_poblacion(dominio, poblacion, tamaño_elite):
