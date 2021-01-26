@@ -24,7 +24,7 @@ def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.99):
     sol=dominio.generar()
     costo=dominio.fcosto(sol)
     cont=0
-    print(sol)
+    #print(sol)
     while temperatura > 0.01:
         # print("Primera solución: "+' '.join(map(str,sol)))
         # print("Costo Primero: "+str(costo))
@@ -45,9 +45,6 @@ def optimizar(dominio, temperatura = 10e32, tasa_enfriamiento = 0.99):
             
         temperatura = temperatura * tasa_enfriamiento
         cont=cont+1
-        # print(str(temperatura))
-        
-        # print("----------------------------------------------------\n")
-    print(costo)
-    print(cont)
-    return sol
+        # print(str(temperatura))   
+    print("iteraciones: ", cont)
+    return costo
