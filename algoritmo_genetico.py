@@ -2,7 +2,7 @@ import random
 import math
 
 
-def optimizar(dominio, tam_pobl, porc_elite, prob_mut, reps,testeo):
+def optimizar(dominio, tam_pobl, porc_elite, prob_mut, reps):
     """Algoritmo genético para optimización estocástica.
 
     Entradas:
@@ -29,9 +29,9 @@ def optimizar(dominio, tam_pobl, porc_elite, prob_mut, reps,testeo):
     poblacion = dominio.generar_n(tam_pobl)
     costo = dominio.fcosto(poblacion[0])
 
-    if testeo:
-        datos = {"Fitness(costo ruta)":[costo],"Iteraciones":[0]}
-        iteracion = 1
+    # if testeo:
+    #     datos = {"Fitness(costo ruta)":[costo],"Iteraciones":[0]}
+    #     iteracion = 1
     
 
     for iterador_genetico in range(0, reps):
@@ -51,15 +51,15 @@ def optimizar(dominio, tam_pobl, porc_elite, prob_mut, reps,testeo):
                 poblacion.append(hijo)
             else:
                 poblacion.append(hijo)     
-        if testeo:
-            ordena_poblacion(dominio,poblacion)#Implementacion de quicksort para ordenar de menor a mayor en costo
-            costo = dominio.fcosto(poblacion[0])   
-            datos["Fitness(costo ruta)"].append(costo)
-            datos["Iteraciones"].append(iteracion)
-            iteracion +=1
+        # if testeo:
+        #     ordena_poblacion(dominio,poblacion)#Implementacion de quicksort para ordenar de menor a mayor en costo
+        #     costo = dominio.fcosto(poblacion[0])   
+        #     datos["Fitness(costo ruta)"].append(costo)
+        #     datos["Iteraciones"].append(iteracion)
+        #     iteracion +=1
             
-    if testeo:
-        return poblacion[0],datos
+    # if testeo:
+    #     return poblacion[0],datos
 
     ordena_poblacion(dominio,poblacion)
     #costo = dominio.fcosto(poblacion[0])                     
